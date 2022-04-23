@@ -49,6 +49,9 @@ public class PlayerMovement : MonoBehaviour
     public float chargedJumpForceMaximum = 400f;
     private float chargeJumpForce = 0f;
     private bool doChargeJump = false;
+    private float currentJumpDuration = 0f;
+    private bool doSplash = false;
+    public float splashFallTime = 0.1f;
     private Vector2 _preCollisionVelocity;
     public float wallBounceCoefficient = 80f;
 
@@ -77,9 +80,34 @@ public class PlayerMovement : MonoBehaviour
         _movement.Disable();
         _jump.Disable();
     }
+
+    private void CheckSplash()
+    {
+        if (_isJumping)
+        {
+            currentJumpDuration += Time.fixedDeltaTime;
+        }
+        else
+        {
+            currentJumpDuration = 0f;
+            doSplash = false;
+        }
+
+        if (currentJumpDuration >= splashFallTime && !doSplash)
+        {
+            doSplash = true;
+            
+            Debug.Log("Gonna splash boiii!");
+
+            //Play fall sound
+            
+        }
+    }
     
     private void FixedUpdate()
     {
+        CheckSplash();
+        
         if (_moveDirection.GetDir() == Direction.RIGHT)
         {
             _spriteRenderer.flipX = false;
@@ -112,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
         if (_moveValue != Vector2.zero)
         {
             _isMoving = true;
-            _rb.velocity = (_moveValue * speed * Time.fixedDeltaTime);
+            _rb.AddForce(_moveValue * speed * Time.fixedDeltaTime, ForceMode2D.Impulse);
             _moveDirection.lastMove = _moveValue;
         }
         else
@@ -129,7 +157,6 @@ public class PlayerMovement : MonoBehaviour
         if (_isMoving)
         {
             _isJumping = true;
-            Debug.Log($"Is jupming? : {_isJumping}");
             PAnimator.SetBool("IsJumping", true);
             Vector2 quickJump = new Vector2(quickJumpWidth * (float) _moveDirection.GetDir(), quickJumpHeight) * quickJumpForce;
             _rb.AddForce(quickJump);
@@ -147,7 +174,6 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         _isJumping = true;
-        Debug.Log($"Is jupming? : {_isJumping}");
         PAnimator.SetBool("IsJumping", true);
         Vector2 chargedJump = new Vector2(chargedJumpWidth * (float) _moveDirection.GetDir(), chargedJumpHeight) * chargeJumpForce;
         _rb.AddForce(chargedJump);
@@ -196,6 +222,12 @@ public class PlayerMovement : MonoBehaviour
         {
             _rb.AddForce(new Vector2(_preCollisionVelocity.x * wallBounceCoefficient * -1f, 0));
             _preCollisionVelocity = Vector2.zero;
+        }
+        else
+        {
+            //Trigger sfx when hitting ground
+            //Animator set splash anim
+            Debug.Log("SPLASH!");
         }
     }
 
