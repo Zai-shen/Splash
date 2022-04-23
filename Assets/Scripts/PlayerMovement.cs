@@ -30,7 +30,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D _rb;
 
-    private bool _jumping;
+    private bool _isGrounded = true;
+    private bool _isJumping = false;
     public float speed;
     public float jumpHeight;
     public float jumpWidth;
@@ -59,10 +60,12 @@ public class PlayerMovement : MonoBehaviour
         _movement.Disable();
         _jump.Disable();
     }
-
+    
     private void FixedUpdate()
     {
-        if (!_jumping)
+        CheckIsGrounded();
+        
+        if (!_isJumping && _isGrounded)
         {
             Move();
         }
@@ -81,15 +84,32 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext obj)
     {
-        _jumping = true;
+        if (!_isGrounded)
+            return;
+
+        _isJumping = true;
 
         Vector2 quickJump = new Vector2(jumpWidth * (int) _moveDirection.GetDir(), jumpHeight) * jumpForce;
         _rb.AddForce(quickJump);
     }
-
-    //TODOOOOOOOOO
-    private void OnCollisionEnter2D(Collision2D col)
+    
+    private void CheckIsGrounded()
     {
-        _jumping = false;
+        Debug.Log("Checking isgrounded");
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, ~(1 << 6));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, ~(1 << 6));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, ~(1 << 6));
+
+        if (hit)
+        {
+            Debug.Log($"Hit: {hit.collider.gameObject.name}");
+        }
+
+        _isGrounded = hit.collider != null;
+        if (_isGrounded)
+        {
+            _isJumping = false;
+        }
+    
     }
 }
