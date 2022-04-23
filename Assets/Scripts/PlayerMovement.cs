@@ -97,8 +97,8 @@ public class PlayerMovement : MonoBehaviour
     {
         Debug.Log("Checking isgrounded");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, ~(1 << 6));
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, ~(1 << 6));
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, ~(1 << 6));
+        // RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, ~(1 << 6));
+        // RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, ~(1 << 6));
 
         if (hit)
         {
