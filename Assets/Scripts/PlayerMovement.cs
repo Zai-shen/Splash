@@ -24,6 +24,7 @@ struct MoveDirection
 public class PlayerMovement : MonoBehaviour
 {
     public Animator PAnimator;
+    private SpriteRenderer _spriteRenderer;
     
     private PlayerInput _playerInput;
     private InputAction _jump;
@@ -55,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _playerInput = new PlayerInput();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _coll = GetComponent<Collider2D>();
     }
@@ -78,6 +80,13 @@ public class PlayerMovement : MonoBehaviour
     
     private void FixedUpdate()
     {
+        if (_moveDirection.GetDir() == Direction.RIGHT)
+        {
+            _spriteRenderer.flipX = false;
+        }else{
+            _spriteRenderer.flipX = true;
+        }
+        
         if (Mathf.Abs(_rb.velocity.x) > 0.0001f)
         {
             _preCollisionVelocity = _rb.velocity;
