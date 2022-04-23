@@ -112,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
         if (_moveValue != Vector2.zero)
         {
             _isMoving = true;
-            _rb.velocity = (_moveValue * speed * Time.fixedDeltaTime);
+            _rb.AddForce(_moveValue * speed * Time.fixedDeltaTime, ForceMode2D.Impulse);
             _moveDirection.lastMove = _moveValue;
         }
         else
