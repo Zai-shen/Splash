@@ -77,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
     {
         CheckIsGrounded();
 
-        if (Mathf.Abs(_rb.velocity.x) > 0.1f)
+        if (Mathf.Abs(_rb.velocity.x) > 0.0001f)
         {
             _preCollisionVelocity = _rb.velocity;
         }

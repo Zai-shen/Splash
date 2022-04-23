@@ -34531,12 +34531,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 7641585592176981545, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
+      propertyPath: quickJumpWidth
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641585592176981545, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
+      propertyPath: quickJumpHeight
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641585592176981545, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
       propertyPath: chargedJumpForceIncrement
       value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 7641585592176981546, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
+      propertyPath: m_Mass
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641585592176981546, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
       propertyPath: m_LinearDrag
-      value: 8
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641585592176981546, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
+      propertyPath: m_GravityScale
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7641585592176981548, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
       propertyPath: m_RootOrder
