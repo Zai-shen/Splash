@@ -23,6 +23,9 @@ struct MoveDirection
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    public Animator PAnimator;
+    private SpriteRenderer _spriteRenderer;
+    
     private PlayerInput _playerInput;
     private InputAction _jump;
     
@@ -49,9 +52,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _preCollisionVelocity;
     public float wallBounceCoefficient = 80f;
 
+
     private void Awake()
     {
         _playerInput = new PlayerInput();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _coll = GetComponent<Collider2D>();
     }
@@ -75,8 +80,13 @@ public class PlayerMovement : MonoBehaviour
     
     private void FixedUpdate()
     {
-        CheckIsGrounded();
-
+        if (_moveDirection.GetDir() == Direction.RIGHT)
+        {
+            _spriteRenderer.flipX = false;
+        }else{
+            _spriteRenderer.flipX = true;
+        }
+        
         if (Mathf.Abs(_rb.velocity.x) > 0.0001f)
         {
             _preCollisionVelocity = _rb.velocity;
@@ -97,6 +107,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         _moveValue = _movement.ReadValue<Vector2>();
+        PAnimator.SetFloat("Speed", Mathf.Abs(_moveValue.x));
         
         if (_moveValue != Vector2.zero)
         {
@@ -115,16 +126,18 @@ public class PlayerMovement : MonoBehaviour
         if (!_isGrounded)
             return;
 
-        _isJumping = true;
-
         if (_isMoving)
         {
+            _isJumping = true;
+            Debug.Log($"Is jupming? : {_isJumping}");
+            PAnimator.SetBool("IsJumping", true);
             Vector2 quickJump = new Vector2(quickJumpWidth * (float) _moveDirection.GetDir(), quickJumpHeight) * quickJumpForce;
             _rb.AddForce(quickJump);
         }
         else
         {
             doChargeJump = true;
+            PAnimator.SetBool("IsCharging", true);
         }
     }
     
@@ -133,13 +146,15 @@ public class PlayerMovement : MonoBehaviour
         if (!_isGrounded || _isMoving || !doChargeJump)
             return;
 
-        Debug.Log($"Charged for: {chargeJumpForce} - jumping now!");
-        
+        _isJumping = true;
+        Debug.Log($"Is jupming? : {_isJumping}");
+        PAnimator.SetBool("IsJumping", true);
         Vector2 chargedJump = new Vector2(chargedJumpWidth * (float) _moveDirection.GetDir(), chargedJumpHeight) * chargeJumpForce;
         _rb.AddForce(chargedJump);
 
         chargeJumpForce = 0f;
         doChargeJump = false;
+        PAnimator.SetBool("IsCharging", false);
     }
     
     private void CheckIsGrounded()
@@ -171,6 +186,7 @@ public class PlayerMovement : MonoBehaviour
         if (_isGrounded)
         {
             _isJumping = false;
+            PAnimator.SetBool("IsJumping", false);
         }
     }
 
@@ -180,6 +196,14 @@ public class PlayerMovement : MonoBehaviour
         {
             _rb.AddForce(new Vector2(_preCollisionVelocity.x * wallBounceCoefficient * -1f, 0));
             _preCollisionVelocity = Vector2.zero;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!doChargeJump)
+        {
+            CheckIsGrounded();
         }
     }
 }
