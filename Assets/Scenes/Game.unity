@@ -353,6 +353,31 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!1 &1105783044 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7641585592176981550, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
+  m_PrefabInstance: {fileID: 7641585591037117271}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1105783049
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105783044}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: caeffdf694a440946b7017436fc051e3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1131762921
 GameObject:
   m_ObjectHideFlags: 0
@@ -34530,6 +34555,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7641585592176981545, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
+      propertyPath: Animator
+      value: 
+      objectReference: {fileID: 1105783049}
+    - target: {fileID: 7641585592176981545, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
+      propertyPath: PAnimator
+      value: 
+      objectReference: {fileID: 1105783049}
     - target: {fileID: 7641585592176981545, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
       propertyPath: quickJumpWidth
       value: 8
