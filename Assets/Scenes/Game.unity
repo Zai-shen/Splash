@@ -51561,6 +51561,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7641585592176981545, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
+      propertyPath: splashPE
+      value: 
+      objectReference: {fileID: 1393320795148877107, guid: 3208fd5c401135d4f9b205c1070517ae, type: 3}
+    - target: {fileID: 7641585592176981545, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
+      propertyPath: tmproText
+      value: 
+      objectReference: {fileID: 923332879845917530, guid: cd10b361ee6d3c1438fc93490722b93c, type: 3}
     - target: {fileID: 7641585592176981548, guid: 9e21232376c1b954ea65d30d437d6a28, type: 3}
       propertyPath: m_RootOrder
       value: 2

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,6 +24,10 @@ struct MoveDirection
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    public ParticleSystem splashPE;
+    private ParticleSystem activeSplashPE;
+    public TextMeshPro tmproText;
+    private TextMeshPro activeTmproText;
     public Animator PAnimator;
     private SpriteRenderer _spriteRenderer;
     
@@ -97,10 +102,7 @@ public class PlayerMovement : MonoBehaviour
         {
             doSplash = true;
             
-            Debug.Log("Gonna splash boiii!");
-
-            //Play fall sound
-            
+            //Play fall sound TODO
         }
     }
     
@@ -139,6 +141,15 @@ public class PlayerMovement : MonoBehaviour
         
         if (_moveValue != Vector2.zero)
         {
+            if (activeSplashPE != null)
+            {
+                activeSplashPE.Stop();
+            }
+            if (activeTmproText != null)
+            {
+                Destroy(activeTmproText);
+            }
+            
             _isMoving = true;
             _rb.AddForce(_moveValue * speed * Time.fixedDeltaTime, ForceMode2D.Impulse);
             _moveDirection.lastMove = _moveValue;
@@ -218,6 +229,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
+        if (!doChargeJump)
+        {
+            CheckIsGrounded();
+        }
+        
         if (!_isGrounded)
         {
             _rb.AddForce(new Vector2(_preCollisionVelocity.x * wallBounceCoefficient * -1f, 0));
@@ -225,17 +241,17 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            //Trigger sfx when hitting ground
-            //Animator set splash anim
-            Debug.Log("SPLASH!");
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (!doChargeJump)
-        {
-            CheckIsGrounded();
+            if (doSplash)
+            {
+                //Trigger sfx when hitting ground
+                activeSplashPE = Instantiate(splashPE,
+                    new Vector3(transform.position.x, _coll.bounds.min.y, transform.position.z), Quaternion.identity);
+                activeTmproText = Instantiate(tmproText,
+                    new Vector3(transform.position.x, _coll.bounds.max.y, transform.position.z), Quaternion.identity);
+                
+                
+                //Animator set splash anim TODO
+            }
         }
     }
 }
