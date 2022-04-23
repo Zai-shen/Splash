@@ -19,7 +19,7 @@ struct MoveDirection
         return lastMove.x < 0 ? Direction.LEFT : Direction.RIGHT;
     }
 }
-
+[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _moveValue;
 
     private Rigidbody2D _rb;
+    private Collider2D _coll;
 
     private bool _isGrounded = true;
     private bool _isJumping = false;
@@ -43,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _playerInput = new PlayerInput();
         _rb = GetComponent<Rigidbody2D>();
+        _coll = GetComponent<Collider2D>();
     }
 
     private void OnEnable()
@@ -95,21 +97,33 @@ public class PlayerMovement : MonoBehaviour
     
     private void CheckIsGrounded()
     {
-        Debug.Log("Checking isgrounded");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, ~(1 << 6));
-        // RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, ~(1 << 6));
-        // RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, ~(1 << 6));
+        float minX = _coll.bounds.min.x;
+        float maxX = _coll.bounds.max.x;
+        float dist = Mathf.Abs(maxX - minX);
+        float cones = 4f;
+        float distIteration = dist / cones;
 
-        if (hit)
+        bool grounded = false;
+        
+        for (int i = 0; i <= cones; i++)
         {
-            Debug.Log($"Hit: {hit.collider.gameObject.name}");
+            Vector2 rayPosition = new Vector2(_coll.bounds.min.x + (i * distIteration), _coll.bounds.min.y);
+
+            RaycastHit2D hit = Physics2D.Raycast(rayPosition, Vector2.down, 0.1f, ~(1 << 6));
+            Debug.DrawRay( rayPosition, Vector2.down * 0.1f, Color.yellow);
+
+            if (hit.collider != null)
+            {
+                grounded = true;
+                break;
+            }
         }
 
-        _isGrounded = hit.collider != null;
+        _isGrounded = grounded;
+        
         if (_isGrounded)
         {
             _isJumping = false;
         }
-    
     }
 }
