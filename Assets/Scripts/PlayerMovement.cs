@@ -42,7 +42,8 @@ public class PlayerMovement : MonoBehaviour
     public float quickJumpForce = 100f;
     public float chargedJumpHeight = 20f;
     public float chargedJumpWidth = 14f;
-    public float chargedJumpIncrement = 100f;
+    public float chargedJumpForceIncrement = 100f;
+    public float chargedJumpForceMaximum = 400f;
     private float chargeJumpForce = 0f;
     private bool doChargeJump = false;
     private Vector2 _preCollisionVelocity;
@@ -81,9 +82,10 @@ public class PlayerMovement : MonoBehaviour
             _preCollisionVelocity = _rb.velocity;
         }
 
-        if (doChargeJump)
+        if (doChargeJump && chargeJumpForce != chargedJumpForceMaximum)
         {
-            chargeJumpForce += chargedJumpIncrement * Time.fixedDeltaTime;
+            chargeJumpForce += chargedJumpForceIncrement * Time.fixedDeltaTime;
+            chargeJumpForce = Mathf.Clamp(chargeJumpForce, 0f, chargedJumpForceMaximum);
         }
         
         if (!_isJumping && _isGrounded)
