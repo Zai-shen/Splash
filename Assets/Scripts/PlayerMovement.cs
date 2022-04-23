@@ -25,20 +25,28 @@ public class PlayerMovement : MonoBehaviour
 {
     private PlayerInput _playerInput;
     private InputAction _jump;
+    
+    private MoveDirection _moveDirection;
     private InputAction _movement;
     private Vector2 _moveValue;
-
+    private bool _isMoving;
+    public float speed;
+    
     private Rigidbody2D _rb;
     private Collider2D _coll;
 
     private bool _isGrounded = true;
     private bool _isJumping = false;
-    public float speed;
-    public float jumpHeight;
-    public float jumpWidth;
-    private float jumpForce = 100f;
-
-    private MoveDirection _moveDirection;
+    public float quickJumpHeight = 5f;
+    public float quickJumpWidth = 12f;
+    public float quickJumpForce = 100f;
+    public float chargedJumpHeight = 20f;
+    public float chargedJumpWidth = 14f;
+    public float chargedJumpIncrement = 100f;
+    private float chargeJumpForce = 0f;
+    private bool doChargeJump = false;
+    private Vector2 _preCollisionVelocity;
+    public float wallBounceCoefficient = 80f;
 
     private void Awake()
     {
@@ -53,7 +61,8 @@ public class PlayerMovement : MonoBehaviour
         _movement.Enable();
 
         _jump = _playerInput.Player.Jump;
-        _jump.performed += Jump;
+        _jump.started += StartJump;
+        _jump.canceled += PerformJump;
         _jump.Enable();
     }
 
@@ -66,6 +75,16 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         CheckIsGrounded();
+
+        if (Mathf.Abs(_rb.velocity.x) > 0.1f)
+        {
+            _preCollisionVelocity = _rb.velocity;
+        }
+
+        if (doChargeJump)
+        {
+            chargeJumpForce += chargedJumpIncrement * Time.fixedDeltaTime;
+        }
         
         if (!_isJumping && _isGrounded)
         {
@@ -79,20 +98,46 @@ public class PlayerMovement : MonoBehaviour
         
         if (_moveValue != Vector2.zero)
         {
+            _isMoving = true;
             _rb.velocity = (_moveValue * speed * Time.fixedDeltaTime);
             _moveDirection.lastMove = _moveValue;
         }
+        else
+        {
+            _isMoving = false;
+        }
     }
 
-    private void Jump(InputAction.CallbackContext obj)
+    private void StartJump(InputAction.CallbackContext obj)
     {
         if (!_isGrounded)
             return;
 
         _isJumping = true;
 
-        Vector2 quickJump = new Vector2(jumpWidth * (int) _moveDirection.GetDir(), jumpHeight) * jumpForce;
-        _rb.AddForce(quickJump);
+        if (_isMoving)
+        {
+            Vector2 quickJump = new Vector2(quickJumpWidth * (float) _moveDirection.GetDir(), quickJumpHeight) * quickJumpForce;
+            _rb.AddForce(quickJump);
+        }
+        else
+        {
+            doChargeJump = true;
+        }
+    }
+    
+    private void PerformJump(InputAction.CallbackContext obj)
+    {
+        if (!_isGrounded || _isMoving || !doChargeJump)
+            return;
+
+        Debug.Log($"Charged for: {chargeJumpForce} - jumping now!");
+        
+        Vector2 chargedJump = new Vector2(chargedJumpWidth * (float) _moveDirection.GetDir(), chargedJumpHeight) * chargeJumpForce;
+        _rb.AddForce(chargedJump);
+
+        chargeJumpForce = 0f;
+        doChargeJump = false;
     }
     
     private void CheckIsGrounded()
@@ -124,6 +169,15 @@ public class PlayerMovement : MonoBehaviour
         if (_isGrounded)
         {
             _isJumping = false;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (!_isGrounded)
+        {
+            _rb.AddForce(new Vector2(_preCollisionVelocity.x * wallBounceCoefficient * -1f, 0));
+            _preCollisionVelocity = Vector2.zero;
         }
     }
 }
