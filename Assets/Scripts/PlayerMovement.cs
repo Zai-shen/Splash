@@ -141,14 +141,7 @@ public class PlayerMovement : MonoBehaviour
         
         if (_moveValue != Vector2.zero)
         {
-            if (activeSplashPE != null)
-            {
-                activeSplashPE.Stop();
-            }
-            if (activeTmproText != null)
-            {
-                Destroy(activeTmproText);
-            }
+            CleanUpSFX();
             
             _isMoving = true;
             _rb.AddForce(_moveValue * speed * Time.fixedDeltaTime, ForceMode2D.Impulse);
@@ -160,11 +153,25 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void CleanUpSFX()
+    {
+        if (activeSplashPE != null)
+        {
+            activeSplashPE.Stop();
+        }
+        if (activeTmproText != null)
+        {
+            Destroy(activeTmproText.gameObject);
+        }
+    }
+    
     private void StartJump(InputAction.CallbackContext obj)
     {
         if (!_isGrounded)
             return;
 
+        CleanUpSFX();
+        
         if (_isMoving)
         {
             _isJumping = true;
