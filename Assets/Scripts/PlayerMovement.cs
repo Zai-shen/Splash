@@ -164,6 +164,7 @@ public class PlayerMovement : MonoBehaviour
         if (_moveValue != Vector2.zero)
         {
             CleanUpSFX();
+            PAnimator.SetBool("IsSplashing", false);
 
             runAudioCurrentCD += Time.fixedDeltaTime;
             if (runAudioCurrentCD >= RunAudioCooldown)
@@ -199,6 +200,7 @@ public class PlayerMovement : MonoBehaviour
     private void DoJump(float jumpWidth, float jumpHeight, float jumpForce)
     {
         _isJumping = true;
+        PAnimator.SetBool("IsSplashing", false);
         PAnimator.SetBool("IsJumping", true);
         _playerAudioSource.PlayOneShot(JumpAudio);
         _rb.AddForce(new Vector2(
@@ -294,8 +296,8 @@ public class PlayerMovement : MonoBehaviour
                 activeTmproText = Instantiate(tmproText,
                     new Vector3(transform.position.x, _coll.bounds.max.y, transform.position.z), Quaternion.identity);
                 
-                
-                //Animator set splash anim TODO
+                //Animator set splash anim
+                PAnimator.SetBool("IsSplashing", true);
             }
         }
     }
