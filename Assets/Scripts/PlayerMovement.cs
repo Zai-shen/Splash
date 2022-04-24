@@ -164,6 +164,15 @@ public class PlayerMovement : MonoBehaviour
             Destroy(activeTmproText.gameObject);
         }
     }
+
+    private void DoJump(float jumpWidth, float jumpHeight, float jumpForce)
+    {
+        _isJumping = true;
+        PAnimator.SetBool("IsJumping", true);
+        _rb.AddForce(new Vector2(
+            jumpWidth * (float) _moveDirection.GetDir(),
+            jumpHeight) * jumpForce);
+    }
     
     private void StartJump(InputAction.CallbackContext obj)
     {
@@ -174,10 +183,7 @@ public class PlayerMovement : MonoBehaviour
         
         if (_isMoving)
         {
-            _isJumping = true;
-            PAnimator.SetBool("IsJumping", true);
-            Vector2 quickJump = new Vector2(quickJumpWidth * (float) _moveDirection.GetDir(), quickJumpHeight) * quickJumpForce;
-            _rb.AddForce(quickJump);
+            DoJump(quickJumpWidth,quickJumpHeight,quickJumpForce);
         }
         else
         {
@@ -191,10 +197,7 @@ public class PlayerMovement : MonoBehaviour
         if (!_isGrounded || _isMoving || !doChargeJump)
             return;
 
-        _isJumping = true;
-        PAnimator.SetBool("IsJumping", true);
-        Vector2 chargedJump = new Vector2(chargedJumpWidth * (float) _moveDirection.GetDir(), chargedJumpHeight) * chargeJumpForce;
-        _rb.AddForce(chargedJump);
+        DoJump(chargedJumpWidth,chargedJumpHeight,chargeJumpForce);
 
         chargeJumpForce = 0f;
         doChargeJump = false;
