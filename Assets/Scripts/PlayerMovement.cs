@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 enum Direction
 {
@@ -28,6 +29,12 @@ public class PlayerMovement : MonoBehaviour
     private ParticleSystem activeSplashPE;
     public TextMeshPro tmproText;
     private TextMeshPro activeTmproText;
+    private AudioSource _playerAudioSource;
+    public AudioClip CollisionAudio;
+    public AudioClip ChargeAudio;
+    public AudioClip JumpAudio;
+    public AudioClip RunAudio;
+    
     public Animator PAnimator;
     private SpriteRenderer _spriteRenderer;
     
@@ -39,6 +46,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _moveValue;
     private bool _isMoving;
     public float speed;
+    public float RunAudioCooldown = 0.1f;
+    private float runAudioCurrentCD = 0f;
     
     private Rigidbody2D _rb;
     private Collider2D _coll;
@@ -54,6 +63,8 @@ public class PlayerMovement : MonoBehaviour
     public float chargedJumpForceMaximum = 400f;
     private float chargeJumpForce = 0f;
     private bool doChargeJump = false;
+    public float ChargeAudioCooldown = 0.2f;
+    private float chargeAudioCurrentCD = 0f;
     private float currentJumpDuration = 0f;
     private bool doSplash = false;
     public float splashFallTime = 0.1f;
@@ -67,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _coll = GetComponent<Collider2D>();
+        _playerAudioSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -122,6 +134,16 @@ public class PlayerMovement : MonoBehaviour
             _preCollisionVelocity = _rb.velocity;
         }
 
+        if (doChargeJump)
+        {
+            chargeAudioCurrentCD += Time.fixedDeltaTime;
+            if (chargeAudioCurrentCD >= ChargeAudioCooldown)
+            {
+                _playerAudioSource.PlayOneShot(ChargeAudio);
+                chargeAudioCurrentCD = 0f;
+            }
+        }
+        
         if (doChargeJump && chargeJumpForce != chargedJumpForceMaximum)
         {
             chargeJumpForce += chargedJumpForceIncrement * Time.fixedDeltaTime;
@@ -142,7 +164,16 @@ public class PlayerMovement : MonoBehaviour
         if (_moveValue != Vector2.zero)
         {
             CleanUpSFX();
-            
+
+            runAudioCurrentCD += Time.fixedDeltaTime;
+            if (runAudioCurrentCD >= RunAudioCooldown)
+            {
+                _playerAudioSource.pitch = Random.Range(0.7f, 1.3f);
+                _playerAudioSource.PlayOneShot(RunAudio);
+                _playerAudioSource.pitch = 1f;
+                runAudioCurrentCD = 0f;
+            }
+
             _isMoving = true;
             _rb.AddForce(_moveValue * speed * Time.fixedDeltaTime, ForceMode2D.Impulse);
             _moveDirection.lastMove = _moveValue;
@@ -169,6 +200,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _isJumping = true;
         PAnimator.SetBool("IsJumping", true);
+        _playerAudioSource.PlayOneShot(JumpAudio);
         _rb.AddForce(new Vector2(
             jumpWidth * (float) _moveDirection.GetDir(),
             jumpHeight) * jumpForce);
@@ -246,6 +278,9 @@ public class PlayerMovement : MonoBehaviour
         
         if (!_isGrounded)
         {
+            _playerAudioSource.pitch = Random.Range(0.8f,1.2f);
+            _playerAudioSource.PlayOneShot(CollisionAudio);
+            _playerAudioSource.pitch = 1f;
             _rb.AddForce(new Vector2(_preCollisionVelocity.x * wallBounceCoefficient * -1f, 0));
             _preCollisionVelocity = Vector2.zero;
         }

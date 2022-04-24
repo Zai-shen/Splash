@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!243 &-8323717784873051086
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Background
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: b8af8c19a68811d4aba259fb8fb42fcd
+  m_Children: []
+  m_Volume: 7a175788960d44948864335fdc9df293
+  m_Pitch: 1cce5431e88a9ed429941b2c2d2018ec
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 4190993172144847121}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!241 &24100000
+AudioMixerController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Main
+  m_OutputGroup: {fileID: 0}
+  m_MasterGroup: {fileID: 24300002}
+  m_Snapshots:
+  - {fileID: 24500006}
+  m_StartSnapshot: {fileID: 24500006}
+  m_SuspendThreshold: -80
+  m_EnableSuspend: 1
+  m_UpdateMode: 0
+  m_ExposedParameters: []
+  m_AudioMixerGroupViews:
+  - guids:
+    - fa2e886af0f0ce14495a2515e0ae6bd3
+    - b8af8c19a68811d4aba259fb8fb42fcd
+    - 88e6704c8e8aaf44eb84f14f19d29a0d
+    name: View
+  m_CurrentViewIndex: 0
+  m_TargetSnapshot: {fileID: 24500006}
+--- !u!243 &24300002
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Master
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: fa2e886af0f0ce14495a2515e0ae6bd3
+  m_Children:
+  - {fileID: 8273605807710500769}
+  - {fileID: -8323717784873051086}
+  m_Volume: dbf7e515039e35946ba9ee546da62a76
+  m_Pitch: 8f55a163c2ff5d547aa79c841d27568c
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 24400004}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &24400004
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 7e6387f8d98918445bb66a26253f8ba3
+  m_EffectName: Attenuation
+  m_MixLevel: e5fc85d547c3c144a9374974462bdfe4
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!245 &24500006
+AudioMixerSnapshotController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Snapshot
+  m_AudioMixer: {fileID: 24100000}
+  m_SnapshotID: 129e92b691f98c84d8be4258c1a004fe
+  m_FloatValues:
+    7a175788960d44948864335fdc9df293: -22.003613
+  m_TransitionOverrides: {}
+--- !u!244 &4190993172144847121
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 9712a5fa218fe1e42be7e8ee7d1d2817
+  m_EffectName: Attenuation
+  m_MixLevel: 0ffee8ce5714a3a4ebe6d16a2c559fca
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &7509735966444995763
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 5874d36d9919f9f44b4048487a2c7ffc
+  m_EffectName: Attenuation
+  m_MixLevel: 278a56e2e94f27e4c8e029725e8fec8e
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &8273605807710500769
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Player
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 88e6704c8e8aaf44eb84f14f19d29a0d
+  m_Children: []
+  m_Volume: 6cb134d2e0385c645bafe2c48f8dfb6e
+  m_Pitch: 917c09b174218524c9466d1f2463566e
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 7509735966444995763}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
