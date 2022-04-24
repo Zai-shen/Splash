@@ -18,10 +18,13 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TimeSpan timeSpan = TimeSpan.FromSeconds(Time.time);
-        _textMeshPro.SetText($"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}");
-        float interpolation = transform.parent.position.y / maxHeight;
-        _textMeshPro.fontMaterial.SetFloat("_GlowPower", interpolation);
+        if (!finishReached)
+        {
+            TimeSpan timeSpan = TimeSpan.FromSeconds(Time.time);
+            _textMeshPro.SetText($"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}");
+            float interpolation = transform.parent.position.y / maxHeight;
+            _textMeshPro.fontMaterial.SetFloat("_GlowPower", interpolation);
+        }
 
         if (transform.parent.position.y >= (maxHeight - 1) && !finishReached)
         {
