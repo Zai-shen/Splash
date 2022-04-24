@@ -113,8 +113,6 @@ public class PlayerMovement : MonoBehaviour
         if (currentJumpDuration >= splashFallTime && !doSplash)
         {
             doSplash = true;
-            
-            //Play fall sound TODO
         }
     }
     
