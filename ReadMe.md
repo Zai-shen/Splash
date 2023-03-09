@@ -1,6 +1,8 @@
 # Splash!
 Splash is a game about GameBerts suffering.
 
+![Splash WinScreen](Assets/Sprites/background/splashfinish.png)
+
 This game was made for the #KLUJAM 2022 by 2 friends. Theme: Punishment.
 
 ## Itch.io crosslink
